@@ -1,4 +1,4 @@
-class TypeTestr {
+export default class TypeTestr {
   items:TestrItem[]=[];
   constructor(className:string="typetestr", defaultFontSize:number=18){
     this.items = this.findAndInit(className, defaultFontSize);
@@ -10,7 +10,6 @@ class TypeTestr {
   findAndInit(className:string, defaultFontSize:number):TestrItem[] {
     let items = this.find(className);
     return this.initItems(items, defaultFontSize);
-
   }
   find(className:string){
     let items: HTMLCollectionOf<Element> = document.getElementsByClassName(className);
@@ -55,5 +54,3 @@ class TestrItem{
     return wrapper;
   }
 }
-
-let typetester = new TypeTestr();
