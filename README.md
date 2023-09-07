@@ -1,11 +1,24 @@
-# typetestr
+# New Project
 
-![testr illustraition](test.gif)
+> ✨ Bootstrapped with Create Snowpack App (CSA).
 
-Simple script for change font size div content.
+## Available Scripts
 
-Add script as a module. `let tt = new TypeTestr()`. Script adds rage input and makes element contenteditable.
+### npm start
 
-In constructor you can specify class name and initial font size:
+Runs the app in the development mode.
+Open http://localhost:8080 to view it in the browser.
 
-`new TypeTestr(className:string="typetestr", defaultFontSize:number=18)`
+The page will reload if you make edits.
+You will also see any lint errors in the console.
+
+### npm run build
+
+Builds a static copy of your site to the `build/` folder.
+Your app is ready to be deployed!
+
+**For the best production performance:** Add a build bundler plugin like [@snowpack/plugin-webpack](https://github.com/snowpackjs/snowpack/tree/main/plugins/plugin-webpack) or [snowpack-plugin-rollup-bundle](https://github.com/ParamagicDev/snowpack-plugin-rollup-bundle) to your `snowpack.config.mjs` config file.
+
+### Q: What about Eject?
+
+No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
