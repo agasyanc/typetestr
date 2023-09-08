@@ -1,0 +1,19 @@
+.tt-element{
+  &__content{
+    // &:hover{
+    //   outline: 1px dashed rgba(168, 162, 125, 0.466);
+    //   outline-offset: 0.15em;
+    // }
+  }
+  &:hover .tt-range{
+    opacity: 1;
+    transition: opacity 1s ease;
+  }
+}
+.tt-range{
+  opacity: 0;
+  transition: opacity .2s ease;
+  &__input{
+    
+  }
+}
