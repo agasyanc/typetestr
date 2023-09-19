@@ -1,9 +1,49 @@
-var l = Object.defineProperty;
-var o = (s, t, e) => t in s ? l(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var a = (s, t, e) => (o(s, typeof t != "symbol" ? t + "" : t, e), e);
-class u {
+var m = Object.defineProperty;
+var u = (r, t, e) => t in r ? m(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
+var o = (r, t, e) => (u(r, typeof t != "symbol" ? t + "" : t, e), e);
+class p {
+  constructor(t, e, s) {
+    o(this, "isDrag", !1);
+    let n = document.createElement("div");
+    n.classList.add("tt-range");
+    let a = document.createElement("div");
+    a.classList.add("tt-range__knob");
+    let d = document.createElement("div");
+    d.classList.add("tt-range__filler"), d.style.width = e * 100 + "%", n.addEventListener("mousedown", (l) => {
+      let i = (l.clientX - n.offsetLeft) / n.offsetWidth;
+      d.style.width = i * 100 + "%", this.isDrag = !0, s(i);
+    }), document.addEventListener("mousemove", (l) => {
+      if (this.isDrag) {
+        let i = (l.clientX - n.offsetLeft) / n.offsetWidth;
+        i >= 0 && i <= 1 && (d.style.width = i * 100 + "%", s(i));
+      }
+    }), document.addEventListener("mouseup", () => {
+      this.isDrag = !1;
+    }), n.appendChild(d), d.appendChild(a), t.appendChild(n);
+  }
+}
+class h {
+  // element:HTMLElement;
+  constructor(t, e = 12, s = 144) {
+    let n = this.wrapElement(t, "tt-element");
+    t.classList.add("tt-element__content"), t.setAttribute("contenteditable", "true");
+    const a = window.getComputedStyle(t).fontSize, d = parseFloat(a);
+    let l = document.createElement("div");
+    l.classList.add("tt-element__range"), n.insertBefore(l, t);
+    const i = (d - e) / (s - e);
+    new p(l, i, (c) => {
+      const f = (s - e) * c + e;
+      t.style.fontSize = f + "px";
+    });
+  }
+  wrapElement(t, e) {
+    let s = document.createElement("div");
+    return s.classList.add(e), t.parentNode.insertBefore(s, t), s.appendChild(t), s;
+  }
+}
+class w {
   constructor(t = "typetestr") {
-    a(this, "items", []);
+    o(this, "items", []);
     this.items = this.findAndInit(t);
   }
   init(t = "typetestr") {
@@ -18,39 +58,13 @@ class u {
   }
   initItems(t) {
     let e = [];
-    for (let n = 0; n < t.length; n++) {
-      let r = new c(t[n]);
-      e.push(r);
+    for (let s = 0; s < t.length; s++) {
+      let n = new h(t[s]);
+      e.push(n);
     }
     return e;
   }
 }
-class c {
-  // element:HTMLElement;
-  constructor(t) {
-    let e = this.wrapElement(t, "tt-element");
-    t.classList.add("tt-element__content"), t.setAttribute("contenteditable", "true");
-    const n = window.getComputedStyle(t).fontSize, r = parseFloat(n);
-    let i = document.createElement("div");
-    i.classList.add("tt-element__range"), e.insertBefore(i, t), new m(i, r, (d) => {
-      t.style.fontSize = d;
-    });
-  }
-  wrapElement(t, e) {
-    let n = document.createElement("div");
-    return n.classList.add(e), t.parentNode.insertBefore(n, t), n.appendChild(t), n;
-  }
-}
-class m {
-  constructor(t, e, n) {
-    let r = document.createElement("div");
-    r.classList.add("tt-range");
-    let i = document.createElement("input");
-    i.classList.add("tt-range__input"), i.type = "range", i.min = "12", i.max = "74", i.value = e.toString(), i.oninput = function() {
-      n && n(i.value + "px");
-    }, r.appendChild(i), t.appendChild(r);
-  }
-}
 export {
-  u as default
+  w as default
 };
