@@ -1,7 +1,13 @@
 {
   "name": "typetestr",
-  "version": "0.0.2",
+  "version": "0.1.1",
+  "description": "Control font size by range slider. Useful for font presentation",
   "type": "module",
+  "main": "/dist/typetestr.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agasyanc/typetestr.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && sass --no-source-map --style=compressed src:dist",
