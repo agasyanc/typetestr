@@ -8,13 +8,16 @@ export default class TestrRange {
     let filler = document.createElement("div")
     filler.classList.add("tt-range__filler");
     filler.style.width=(initPercent*100)+"%";
-    range.addEventListener("mousedown", (e) =>{
+    
+    range.addEventListener("pointerdown", (e:PointerEvent) =>{
+      range.setPointerCapture(e.pointerId);
+      
       let percent = (e.clientX - range.offsetLeft) / range.offsetWidth;
       filler.style.width = (percent * 100) + "%"
       this.isDrag = true;
       call(percent)
     })
-    document.addEventListener("mousemove", (e) =>{
+    range.addEventListener("pointermove", (e) =>{
       
       if (this.isDrag) {
         let percent = (e.clientX - range.offsetLeft) / range.offsetWidth;
@@ -24,7 +27,8 @@ export default class TestrRange {
         }
       }
     })
-    document.addEventListener("mouseup", () =>{
+    range.addEventListener("pointerup", (e:PointerEvent) =>{
+      range.releasePointerCapture(e.pointerId)
       this.isDrag = false;
     })
     range.appendChild(filler)
