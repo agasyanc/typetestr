@@ -1,10 +1,24 @@
 {
   "name": "typetestr",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Control font size by range slider. Useful for font presentation",
   "type": "module",
   "main": "/dist/typetestr.js",
   "browser": "/dist/typetestr.js",
+  "exports": {
+    ".": {
+      "import": "./dist/typetestr.js",
+      "require": "./dist/typetestr.js"
+    }
+  },
+  "keywords": [
+    "font",
+    "size",
+    "slider",
+    "range",
+    "control",
+    "presentation"
+  ],
   "files": [
     "dist/typetestr.js",
     "dist/typetestr.css"
