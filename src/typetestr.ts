@@ -1,11 +1,9 @@
 import TestrItem from "./testr_item";
+
 export default class TypeTestr {
   items:TestrItem[]=[];
+  
   constructor(className:string="typetestr"){
-    this.items = this.findAndInit(className);
-  }
-  init(className:string="typetestr"){
-    this.items = [];
     this.items = this.findAndInit(className);
   }
   findAndInit(className:string):TestrItem[] {
