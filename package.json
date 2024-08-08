@@ -2,6 +2,16 @@
   "name": "typetestr",
   "version": "0.2.0",
   "description": "Control font size by range slider. Useful for font presentation",
+  "homepage": "https://agasyanc.ru/page/typetestr",
+  "bugs": {
+    "url": "https://github.com/agasyanc/typetestr/issues",
+    "email": "agasyanc@gmail.com"
+  },
+  "license":"MIT",
+  "author": {
+    "name": "Evgeniy Agasyants",
+    "email": "agasyanc@gmail.com"
+  },
   "type": "module",
   "main": "/dist/typetestr.js",
   "browser": "/dist/typetestr.js",
