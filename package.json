@@ -35,7 +35,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/agasyanc/typetestr.git"
+    "url": "git+https://github.com/agasyanc/typetestr.git"
   },
   "scripts": {
     "dev": "vite",
