@@ -7,7 +7,7 @@ Font size and variable setting slider for font preview. Mouse wheel and keyboard
 Get `dist/typetestr.js`. Add script as a module. `let tt = new TypeTestr()`. Script adds rage input and makes element contenteditable.
 
 ```ts
-import TypeTestr from './typetestr.js'
+import { TypeTestr } from './typetestr.js'
 // create new object on page load
 let tt = new TypeTestr() // or new TypeTester("my-class-name")
 ```
