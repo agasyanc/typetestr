@@ -114,5 +114,6 @@ class _ {
   }
 }
 export {
-  _ as default
+  g as TestrItem,
+  _ as TypeTestr
 };
