@@ -1,94 +1,105 @@
 export default class TestrRange {
   isDrag: boolean = false;
+  range_container: HTMLElement;
   range: HTMLElement;
   knob: HTMLElement;
   filler: HTMLElement;
+  private abortController: AbortController = new AbortController();
 
   constructor(container: HTMLElement, initPercent: number, name: string, public call: Function) {
-    const range_container = document.createElement('div')
-    range_container.classList.add("tt-range__container")
-    const name_title = document.createElement('div')
-    name_title.classList.add("tt-range__title")
+    this.range_container = document.createElement('div');
+    this.range_container.classList.add("tt-range__container");
+    const name_title = document.createElement('div');
+    name_title.classList.add("tt-range__title");
     name_title.textContent = name;
     this.range = document.createElement("div");
     this.range.classList.add("tt-range");
     this.range.tabIndex = 0;
     this.knob = document.createElement("div");
     this.knob.classList.add("tt-range__knob");
-    this.filler = document.createElement("div")
+    this.filler = document.createElement("div");
     this.filler.classList.add("tt-range__filler");
-    this.set_percent(initPercent)
+    this.set_percent(initPercent);
 
     this.range.style.touchAction = "none";
 
+    const signal = this.abortController.signal;
+
     this.range.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key == "ArrowLeft" || e.key == "ArrowRight") {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
         let percent = parseFloat(this.knob.style.left) / 100;
         const step = e.shiftKey ? 0.1 : 0.01;
-        if (e.key == "ArrowLeft") percent -= step;
-        if (e.key == "ArrowRight") percent += step;
+        if (e.key === "ArrowLeft") percent -= step;
+        if (e.key === "ArrowRight") percent += step;
 
         if (percent < 0) percent = 0;
         if (percent > 1) percent = 1;
-        this.set_percent(percent)
-        this.call(percent)
+        this.set_percent(percent);
+        this.call(percent);
       }
-    })
+    }, { signal });
 
     this.range.addEventListener("pointerdown", (e: PointerEvent) => {
       this.range.setPointerCapture(e.pointerId);
-
-      this.set_width(e.offsetX)
+      this.set_width(e.offsetX);
       this.isDrag = true;
-    })
+    }, { signal });
 
     this.range.addEventListener("pointermove", (e: PointerEvent) => {
-
       if (this.isDrag) {
-        this.set_width(e.offsetX)
+        this.set_width(e.offsetX);
       }
-    })
+    }, { signal });
+
     this.range.addEventListener("pointerup", (e: PointerEvent) => {
-      this.range.releasePointerCapture(e.pointerId)
+      try {
+        this.range.releasePointerCapture(e.pointerId);
+      } catch (_) {}
       this.isDrag = false;
-    })
+    }, { signal });
 
     this.range.addEventListener('wheel', (e: WheelEvent) => {
       const step = e.shiftKey ? -e.deltaX / 100 : -e.deltaX / 1000;
       let percent = parseFloat(this.knob.style.left) / 100 + step;
       if (percent < 0) percent = 0;
       if (percent > 1) percent = 1;
-      this.set_percent(percent)
-      this.call(percent)
+      this.set_percent(percent);
+      this.call(percent);
 
       e.preventDefault();
-    })
+    }, { signal, passive: false });
 
-    // this.range.appendChild(name_title);
-
-    this.range.appendChild(this.filler)
+    this.range.appendChild(this.filler);
     this.filler.appendChild(this.knob);
 
-    range_container.appendChild(name_title)
-    range_container.appendChild(this.range)
+    this.range_container.appendChild(name_title);
+    this.range_container.appendChild(this.range);
 
-    container.appendChild(range_container);
+    container.appendChild(this.range_container);
   }
+
   set_width(e_offsetX: number) {
-    const padding_left = parseFloat(window.getComputedStyle(this.range).paddingLeft)
-    const padding_right = parseFloat(window.getComputedStyle(this.range).paddingRight)
+    const padding_left = parseFloat(window.getComputedStyle(this.range).paddingLeft);
+    const padding_right = parseFloat(window.getComputedStyle(this.range).paddingRight);
 
-    let percent = (e_offsetX - padding_left) / (this.range.offsetWidth - padding_right - padding_right);
+    let percent = (e_offsetX - padding_left) / (this.range.offsetWidth - padding_left - padding_right);
     if (percent >= 0 && percent <= 1) {
-      this.set_percent(percent)
-      this.call(percent)
+      this.set_percent(percent);
+      this.call(percent);
     }
-
   }
+
   set_percent(percent: number) {
-    if (percent < 0) percent = 0
-    const percent_s = 100 - (percent * 100) + "%"
-    this.filler.style.background = "linear-gradient(to left, #c0c0c0 " + percent_s + ", blue " + percent_s + ")"
-    this.knob.style.left = (percent * 100) + "%"
+    if (percent < 0) percent = 0;
+    if (percent > 1) percent = 1;
+    const percent_s = 100 - (percent * 100) + "%";
+    this.filler.style.background = `linear-gradient(to left, var(--tt-track-bg, #c0c0c0) ${percent_s}, var(--tt-track-fill, #2563eb) ${percent_s})`;
+    this.knob.style.left = (percent * 100) + "%";
+  }
+
+  destroy() {
+    this.abortController.abort();
+    this.isDrag = false;
+    this.range_container.remove();
   }
 }

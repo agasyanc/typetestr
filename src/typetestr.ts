@@ -1,5 +1,8 @@
 import TestrItem from "./testr_item";
-export { TestrItem };
+import TestrRange from "./testr_range";
+import Feat from "./feat";
+
+export { TestrItem, TestrRange, Feat };
 
 export class TypeTestr {
   items: TestrItem[] = [];
@@ -26,4 +29,13 @@ export class TypeTestr {
     }
     return testrItems;
   }
+
+  destroy() {
+    for (const item of this.items) {
+      item.destroy();
+    }
+    this.items = [];
+  }
 }
+
+export default TypeTestr;
