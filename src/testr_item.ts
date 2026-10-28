@@ -1,6 +1,10 @@
 import Feat from "./feat";
 import TestrRange from "./testr_range";
 
+export interface TestrItemOptions {
+  wrap?: boolean;
+}
+
 export default class TestrItem {
   static instances = new WeakMap<HTMLElement, TestrItem>();
 
@@ -15,7 +19,7 @@ export default class TestrItem {
   private hadContentEditable: boolean = false;
   private isDestroyed: boolean = false;
 
-  constructor(public element: HTMLElement) {
+  constructor(public element: HTMLElement, options: TestrItemOptions = {}) {
     // If instance already exists for this element, destroy it cleanly first
     const existing = TestrItem.instances.get(element);
     if (existing) {
@@ -29,7 +33,10 @@ export default class TestrItem {
 
     this.hadContentEditable = element.hasAttribute("contenteditable");
 
-    this.wrapper = this.wrapElement(element, "tt-element");
+    if (options.wrap) {
+      this.wrapper = this.wrapElement(element, "tt-element");
+    }
+
     this.element.classList.add("tt-element__content");
     this.element.setAttribute("contenteditable", "true");
 
@@ -52,7 +59,12 @@ export default class TestrItem {
 
     this.range_element = document.createElement("div");
     this.range_element.classList.add("tt-element__range-list");
-    this.wrapper.insertBefore(this.range_element, this.element);
+
+    if (this.wrapper) {
+      this.wrapper.insertBefore(this.range_element, this.element);
+    } else if (this.element.parentNode) {
+      this.element.parentNode.insertBefore(this.range_element, this.element);
+    }
 
     for (let feat of this.feats) {
       const range = new TestrRange(
@@ -75,6 +87,9 @@ export default class TestrItem {
         parent.parentNode.insertBefore(element, parent);
         parent.remove();
       }
+    }
+    if (element.previousElementSibling?.classList.contains("tt-element__range-list")) {
+      element.previousElementSibling.remove();
     }
     element.classList.remove("tt-element__content");
   }
